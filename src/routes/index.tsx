@@ -29,36 +29,36 @@ function Home() {
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-slate-700">
-        <div 
+        <div
           className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
-            `,
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              `,
             backgroundSize: '60px 60px',
             animation: 'gridMove 20s ease-in-out infinite alternate'
           }}
         />
-        
-        <div 
+
+        <div
           className="absolute inset-0 opacity-40"
           style={{
             background: `
-              radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.3) 0%, transparent 50%),
-              radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.2) 0%, transparent 50%)
-            `,
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.2) 0%, transparent 50%)
+              `,
             animation: 'gradientShift 15s ease-in-out infinite alternate'
           }}
         />
 
-        <div 
+        <div
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: `
-              radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px)
-            `,
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px)
+              `,
             backgroundSize: '20px 20px'
           }}
         />
@@ -76,22 +76,20 @@ function Home() {
             <div className="flex bg-zinc-50/50">
               <button
                 onClick={() => setShowQR(false)}
-                className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 ${
-                  !showQR 
-                    ? 'bg-gradient-to-r from-black via-gray-900 to-slate-700 text-white shadow-lg' 
-                    : 'text-gray-600 hover:bg-gray-100/50'
-                }`}
+                className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 ${!showQR
+                  ? 'bg-gradient-to-r from-black via-gray-900 to-slate-700 text-white shadow-lg'
+                  : 'text-gray-600 hover:bg-gray-100/50'
+                  }`}
               >
                 <MailOutlined className="mr-2" />
                 Email Login
               </button>
               <button
                 onClick={() => setShowQR(true)}
-                className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 ${
-                  showQR 
-                    ? 'bg-gradient-to-r from-black via-gray-900 to-slate-700 text-white shadow-lg' 
-                    : 'text-gray-600 hover:bg-gray-100/50'
-                }`}
+                className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 ${showQR
+                  ? 'bg-gradient-to-r from-black via-gray-900 to-slate-700 text-white shadow-lg'
+                  : 'text-gray-600 hover:bg-gray-100/50'
+                  }`}
               >
                 <QrcodeOutlined className="mr-2" />
                 QR Code
@@ -131,7 +129,7 @@ function Home() {
                         prefix={<MailOutlined className="text-gray-400" />}
                         placeholder="Enter your email address"
                         className="rounded-xl border-gray-200 hover:border-blue-900 focus:border-zinc-700"
-                        style={{ 
+                        style={{
                           height: '48px',
                           fontSize: '16px'
                         }}
@@ -151,13 +149,13 @@ function Home() {
                         placeholder="Enter your password"
                         iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                         className="rounded-xl border-gray-200 hover:border-blue-900 focus:border-zinc-700"
-                        style={{ 
+                        style={{
                           height: '48px',
                           fontSize: '16px'
                         }}
                       />
                     </Form.Item>
-                    
+
                     <br />
 
                     <Form.Item>

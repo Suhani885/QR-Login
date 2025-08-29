@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build && tsc --noEmit",
-    "start": "node .output/server/index.mjs"
+    "start": "node .output/server/index.mjs",
+    "generate-api": "openapi-ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.85.5",
@@ -14,12 +15,15 @@
     "@tanstack/react-router-devtools": "^1.131.28",
     "@tanstack/react-start": "^1.131.28",
     "antd": "^5.27.1",
+    "axios": "^1.11.0",
+    "lucide-react": "^0.542.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwind-merge": "^2.6.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@hey-api/openapi-ts": "0.82.0",
     "@types/node": "^22.5.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
