@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import type { FormProps } from 'antd';
-import { Button, Form, Input, Typography } from 'antd';
+import { Form, Input, Typography } from 'antd';
 import { MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 
@@ -66,10 +66,13 @@ function Home() {
 
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="relative w-full max-w-2xl mx-5">
-          <div className="text-center mb-10 mt-2">
-            <Title className="!text-white drop-shadow-lg">
-              Welcome to OurWebApp
+          <div className="text-center mb-10">
+            <Title className="!text-white !mb-2 drop-shadow-lg" style={{ fontSize: '2.5rem', fontWeight: 700 }}>
+              Welcome to NexTalk
             </Title>
+            <Text className="text-gray-300 text-lg">
+              Connect, communicate, and collaborate seamlessly
+            </Text>
           </div>
 
           <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-900 overflow-hidden">
@@ -159,9 +162,12 @@ function Home() {
                     <br />
 
                     <Form.Item>
-                      <Button type="primary" htmlType="submit" className="h-12 w-full rounded-xl bg-gradient-to-r from-black via-gray-900 to-slate-700 hover:from-blue-700 hover:to-zinc-900 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 border-none">
+                      <button 
+                        type="submit" 
+                        className="h-12 w-full rounded-xl bg-gradient-to-r from-black via-gray-900 to-slate-700 font-semibold text-lg text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 border-none cursor-pointer"
+                      >
                         Sign In
-                      </Button>
+                      </button>
                     </Form.Item>
                   </Form>
                 </div>
@@ -172,7 +178,7 @@ function Home() {
                       Sign in with QR code
                     </Title>
                     <Text className="text-gray-600 block">
-                      Scan this with your phone's OurWebApp scanner to login
+                      Scan this with your phone's NexTalk scanner to login
                     </Text>
                   </div>
 
@@ -191,7 +197,7 @@ function Home() {
                       <div className="flex-shrink-0 w-2 h-2 bg-blue-950 rounded-full mt-2"></div>
                       <div className="text-left">
                         <Text className="text-blue-950 font-medium block">
-                          Open OurWebApp on your phone
+                          Open NexTalk on your phone
                         </Text>
                         <Text className="text-blue-950 text-sm">
                           Tap Link a Device
