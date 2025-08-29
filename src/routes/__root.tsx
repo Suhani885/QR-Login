@@ -4,7 +4,15 @@ import {
   Link,
   Scripts,
   createRootRoute,
+  Outlet
 } from '@tanstack/react-router'
+
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+
 import * as React from 'react'
 import { DefaultCatchBoundary } from '@/components/DefaultCatchBoundary'
 import { NotFound } from '@/components/NotFound'
@@ -12,6 +20,7 @@ import appCss from '@/styles/app.css?url'
 import { seo } from '@/utils/seo'
 import "../setup"
 
+const queryClient = new QueryClient()
 export const Route = createRootRoute({
   head: () => ({
     meta: [
@@ -59,8 +68,20 @@ export const Route = createRootRoute({
   }),
   errorComponent: DefaultCatchBoundary,
   notFoundComponent: () => <NotFound />,
-  shellComponent: RootDocument,
+  shellComponent: RootComponent,
 })
+
+
+function RootComponent() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </QueryClientProvider>
+  )
+}
+
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (

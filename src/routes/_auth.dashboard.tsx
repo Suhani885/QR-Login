@@ -16,8 +16,8 @@ import type { MenuProps } from 'antd';
 
 const { Sider, Content, Header } = Layout;
 const { Title, Text } = Typography;
-
-export const Route = createFileRoute('/dashboard')({
+import { useIsMobile } from '@/hooks/useIsMobile';
+export const Route = createFileRoute('/_auth/dashboard')({
   component: Dashboard,
 })
 
@@ -25,6 +25,7 @@ function Dashboard() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
+  const isMobile = useIsMobile();
 
   const handleMenuClick = (action: string) => {
     console.log('Menu clicked:', action);
@@ -39,7 +40,7 @@ function Dashboard() {
     { id: 5, name: 'Design Team', message: 'New mockups ready', time: 'Monday', unread: 1 },
   ];
 
-  const menuItems: MenuProps['items'] = [
+  const menuItems: MenuProps['items'] = isMobile ? [
     {
       key: 'profile',
       label: (
@@ -79,11 +80,42 @@ function Dashboard() {
         </button>
       ),
     },
-  ];
+  ]
+    :
+    [
+      {
+        key: 'profile',
+        label: (
+          <button
+            onClick={() => handleMenuClick('profile')}
+            className="w-full flex items-center space-x-3 py-1"
+          >
+            <User size={16} className="text-gray-600" />
+            <span className="text-gray-800 font-medium">Profile</span>
+          </button>
+        ),
+      },
+
+      {
+        type: 'divider',
+      },
+      {
+        key: 'logout',
+        label: (
+          <button
+            onClick={() => handleMenuClick('logout')}
+            className="w-full flex items-center space-x-3 py-1"
+          >
+            <LogOut size={16} className="text-red-600" />
+            <span className="text-red-600 font-medium">Logout</span>
+          </button>
+        ),
+      },
+    ];
 
   const handleChatClick = (chatId: number) => {
     setSelectedChat(chatId);
-    setMobileMenuOpen(false); 
+    setMobileMenuOpen(false);
   };
 
   const SidebarContent = () => (
@@ -110,7 +142,7 @@ function Dashboard() {
               <Settings size={20} className="text-gray-600" />
             </button>
           </Dropdown>
-          
+
           <button
             className="p-2 hover:bg-gray-200 rounded-full transition-all duration-200 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
@@ -131,11 +163,10 @@ function Dashboard() {
 
       <div className="flex-1 overflow-y-auto">
         {chats.map((chat) => (
-          <div 
-            key={chat.id} 
-            className={`flex items-center p-4 hover:bg-gray-100/50 cursor-pointer border-b border-gray-100/50 transition-all duration-200 ${
-              selectedChat === chat.id ? 'bg-slate-100 border-l-4 border-l-blue-900' : ''
-            }`}
+          <div
+            key={chat.id}
+            className={`flex items-center p-4 hover:bg-gray-100/50 cursor-pointer border-b border-gray-100/50 transition-all duration-200 ${selectedChat === chat.id ? 'bg-slate-100 border-l-4 border-l-blue-900' : ''
+              }`}
             onClick={() => handleChatClick(chat.id)}
           >
             <Avatar
@@ -151,10 +182,9 @@ function Dashboard() {
               <div className="flex justify-between items-center">
                 <Text className="text-sm text-gray-600 truncate">{chat.message}</Text>
                 {chat.unread > 0 && (
-                  <Badge 
-                    count={chat.unread} 
-                    size="small"
-                    style={{ 
+                  <Badge
+                    count={chat.unread}
+                    style={{
                       backgroundColor: '#1f2937',
                       marginLeft: '8px'
                     }}
@@ -170,33 +200,37 @@ function Dashboard() {
 
   return (
     <Layout className="h-screen">
-      <Sider 
-        width={320} 
-        className="!bg-white shadow-2xl hidden md:block"
-        style={{ 
-          borderRight: '1px solid #e5e7eb',
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(12px)'
-        }}
-      >
-        <SidebarContent />
-      </Sider>
+      {isMobile ?
+        <Drawer
+          title={null}
+          placement="left"
+          onClose={() => setMobileMenuOpen(false)}
+          open={mobileMenuOpen}
+          width="100%"
+          className="md:hidden"
+          closable={false}
+          styles={{
+            body: { padding: 0 },
+            header: { display: 'none' }
+          }}
+        >
+          <SidebarContent />
+        </Drawer>
+        :
+        <Sider
+          width={320}
+          className="!bg-white shadow-2xl hidden md:block"
+          style={{
+            borderRight: '1px solid #e5e7eb',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(12px)'
+          }}
+        >
+          <SidebarContent />
+        </Sider>
+      }
 
-      <Drawer
-        title={null}
-        placement="left"
-        onClose={() => setMobileMenuOpen(false)}
-        open={mobileMenuOpen}
-        width="100%"
-        className="md:hidden"
-        closable={false}
-        styles={{
-          body: { padding: 0 },
-          header: { display: 'none' }
-        }}
-      >
-        <SidebarContent />
-      </Drawer>
+
 
       <Layout>
         <Header className="bg-white border-b border-gray-200 px-4 flex items-center justify-between md:hidden shadow-sm">
@@ -214,10 +248,10 @@ function Dashboard() {
 
         <Content>
           <div className="bg-white px-6 py-4 border-b border-gray-200 items-center justify-between shadow-sm hidden md:flex"
-               style={{ 
-                 backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                 backdropFilter: 'blur(12px)'
-               }}>
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(12px)'
+            }}>
             <div className="flex items-center space-x-4">
               <Text className="text-gray-600 text-xl font-bold">
                 {selectedChat ? `Chat with ${chats.find(c => c.id === selectedChat)?.name}` : 'Choose a conversation to start messaging'}
@@ -226,11 +260,11 @@ function Dashboard() {
           </div>
 
           <div className="h-full flex items-center justify-center bg-white"
-               style={{ 
-                 backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                 backdropFilter: 'blur(4px)',
-                 height: 'calc(100vh - 64px)' 
-               }}>
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              backdropFilter: 'blur(4px)',
+              height: 'calc(100vh - 64px)'
+            }}>
             <div className="text-center px-4">
               <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <MessageCircle size={48} className="text-gray-400 md:w-15 md:h-15" />

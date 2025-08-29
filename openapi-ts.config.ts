@@ -1,8 +1,7 @@
 import { defineConfig } from '@hey-api/openapi-ts';
-import { baseURL } from '@/services/baseURL';
 
 export default defineConfig({
-    input: `${baseURL}/schema`,
+    input: "http://10.21.97.249:8001/api/schema",
     output: 'src/services/api',
     plugins: [
         '@tanstack/react-query',

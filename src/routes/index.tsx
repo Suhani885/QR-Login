@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import type { FormProps } from 'antd';
 import { Form, Input, Typography } from 'antd';
 import { MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 const { Title, Text } = Typography;
 
 type FieldType = {
@@ -25,6 +25,14 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const [showQR, setShowQR] = useState(false);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (isMobile) {
+      setShowQR(false)
+    }
+  }, [isMobile])
+
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -76,7 +84,7 @@ function Home() {
           </div>
 
           <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-gray-900 overflow-hidden">
-            <div className="flex bg-zinc-50/50">
+            <div className="md:flex bg-zinc-50/50 hidden">
               <button
                 onClick={() => setShowQR(false)}
                 className={`flex-1 py-4 px-6 text-center font-semibold transition-all duration-200 ${!showQR
@@ -99,7 +107,7 @@ function Home() {
               </button>
             </div>
 
-            <div className="p-20">
+            <div className="px-8 py-10 sm:px-20 md:p-20">
               {!showQR ? (
                 <div className="space-y-6">
                   <div className="text-center mb-10">
@@ -162,8 +170,8 @@ function Home() {
                     <br />
 
                     <Form.Item>
-                      <button 
-                        type="submit" 
+                      <button
+                        type="submit"
                         className="h-12 w-full rounded-xl bg-gradient-to-r from-black via-gray-900 to-slate-700 font-semibold text-lg text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 border-none cursor-pointer"
                       >
                         Sign In
