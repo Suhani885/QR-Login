@@ -33,7 +33,7 @@ export const Route = createRootRoute({
       },
       ...seo({
         title:
-          'NextTalk',
+          'NexTalk',
         description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
       }),
     ],
