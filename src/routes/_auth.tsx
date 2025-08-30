@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_auth')({
 
 function homeLayout() {
   const router = useRouter()
-  const { data, isLoading: loading, isSuccess } = useQuery({
+  const { data, isLoading: loading, isError } = useQuery({
     ...coreLoginRetrieveOptions(),
     retry: false,
   });
@@ -16,11 +16,8 @@ function homeLayout() {
   if (loading) {
     return <h1>Loading</h1>
   }
-  if (isSuccess) {
-    // if (data.user_data) {
-    //   console.log(data.user_data)
-    //   router.navigate({ to: "/admin" })
-    // }
+  if (isError) {
+    router.navigate({ to: "/" })
     console.log(data)
   }
 

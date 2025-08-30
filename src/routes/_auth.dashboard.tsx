@@ -13,22 +13,46 @@ import {
 } from 'lucide-react';
 import { Layout, Input, Avatar, Badge, Typography, Dropdown, Drawer } from 'antd';
 import type { MenuProps } from 'antd';
-
-const { Sider, Content, Header } = Layout;
-const { Title, Text } = Typography;
+import { useMutation } from '@tanstack/react-query';
+import { coreLoginDestroyMutation } from '@/services/api/@tanstack/react-query.gen';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { toast } from 'sonner';
+import { useRouter } from '@tanstack/react-router';
 export const Route = createFileRoute('/_auth/dashboard')({
   component: Dashboard,
 })
-
+const { Sider, Content, Header } = Layout;
+const { Title, Text } = Typography;
 function Dashboard() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedChat, setSelectedChat] = useState<number | null>(null);
   const isMobile = useIsMobile();
+  const router = useRouter()
+  const logoutMutation = useMutation(coreLoginDestroyMutation())
 
   const handleMenuClick = (action: string) => {
     console.log('Menu clicked:', action);
+    if (action == "link-device") {
+      router.navigate({ to: "/scanner" })
+    }
+    if (action == "logout") {
+      logoutMutation.mutate({},
+        {
+          onSuccess: (data) => {
+            console.log(data)
+            toast.success("User Logut Successfully!!")
+            router.navigate({ to: "/" })
+
+          },
+          onError: (error) => {
+            console.log(error)
+            toast.error("Error")
+          }
+
+        }
+      )
+    }
     setDropdownVisible(false);
   };
 
@@ -264,8 +288,9 @@ function Dashboard() {
               backgroundColor: 'rgba(255, 255, 255, 0.8)',
               backdropFilter: 'blur(4px)',
               height: 'calc(100vh - 64px)'
-            }}>
-            <div className="text-center px-4">
+            }}
+          >
+            <div className="text-center px-4 ">
               <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                 <MessageCircle size={48} className="text-gray-400 md:w-15 md:h-15" />
               </div>

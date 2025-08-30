@@ -1,18 +1,22 @@
 import { createFileRoute } from '@tanstack/react-router'
 import type { FormProps } from 'antd';
 import { Form, Input, Typography } from 'antd';
-import { MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined } from '@ant-design/icons';
+import { MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined, UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { useRouter } from '@tanstack/react-router';
+import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { coreLoginCreateMutation } from '@/services/api/@tanstack/react-query.gen';
+import { coreLoginRetrieveOptions } from '@/services/api/@tanstack/react-query.gen';
+import { toast } from 'sonner';
 const { Title, Text } = Typography;
 
-type FieldType = {
-  email?: string;
-  password?: string;
-};
 
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Login attempt:', values);
+
+type FieldType = {
+  userName?: string;
+  password?: string;
 };
 
 const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -24,8 +28,42 @@ export const Route = createFileRoute('/')({
 })
 
 function Home() {
+  const loginmutation = useMutation(coreLoginCreateMutation())
+  const router = useRouter()
+  const { data, isLoading: loading, isSuccess } = useQuery({
+    ...coreLoginRetrieveOptions(),
+    retry: false,
+  });
+  if (isSuccess) {
+    router.navigate({ to: "/dashboard" })
+  }
+
   const [showQR, setShowQR] = useState(false);
   const isMobile = useIsMobile();
+
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    console.log('Login attempt:', values);
+    const token: string = btoa(values.userName + ":" + values.password);
+    loginmutation.mutate(
+      {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          toast.success(data.msg)
+          router.navigate({ to: "/dashboard" });
+        },
+        onError: (error) => {
+          console.log(error)
+          toast.error("error")
+
+        },
+      }
+    );
+
+  };
 
   useEffect(() => {
     if (isMobile) {
@@ -75,10 +113,10 @@ function Home() {
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="relative w-full max-w-2xl mx-5">
           <div className="text-center mb-10">
-            <Title className="!text-white !mb-2 drop-shadow-lg" style={{ fontSize: '2.5rem', fontWeight: 700 }}>
+            <Title className="!text-white !mb-2 drop-shadow-lg !text-3xl sm:!text-5xl">
               Welcome to NexTalk
             </Title>
-            <Text className="text-gray-300 text-lg">
+            <Text className="text-gray-300 !text-md sm:!text-lg">
               Connect, communicate, and collaborate seamlessly
             </Text>
           </div>
@@ -92,8 +130,8 @@ function Home() {
                   : 'text-gray-600 hover:bg-gray-100/50'
                   }`}
               >
-                <MailOutlined className="mr-2" />
-                Email Login
+                <UserOutlined className="mr-2" />
+                User Login
               </button>
               <button
                 onClick={() => setShowQR(true)}
@@ -111,7 +149,7 @@ function Home() {
               {!showQR ? (
                 <div className="space-y-6">
                   <div className="text-center mb-10">
-                    <Title level={1} className="text-black mb-2">
+                    <Title level={1} className="text-black mb-2 !text-3xl sm:!text-4xl">
                       Sign in to your account
                     </Title>
                     <Text className="text-gray-600">
@@ -129,16 +167,15 @@ function Home() {
                     className="space-y-4"
                   >
                     <Form.Item<FieldType>
-                      label="Email Address"
-                      name="email"
+                      label="User Name"
+                      name="userName"
                       rules={[
-                        { required: true, message: 'Please enter your email' },
-                        { type: 'email', message: 'Please enter a valid email' }
+                        { required: true, message: 'Please enter your User Name' },
                       ]}
                     >
                       <Input
-                        prefix={<MailOutlined className="text-gray-400" />}
-                        placeholder="Enter your email address"
+                        prefix={<UserOutlined className="text-gray-400" />}
+                        placeholder="Enter your User Name"
                         className="rounded-xl border-gray-200 hover:border-blue-900 focus:border-zinc-700"
                         style={{
                           height: '48px',

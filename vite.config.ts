@@ -6,6 +6,7 @@ import viteReact from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     port: 3000,
+    allowedHosts: ["3d495ff86857.ngrok-free.app"]
   },
   plugins: [
     tsConfigPaths({

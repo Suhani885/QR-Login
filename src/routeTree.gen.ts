@@ -9,16 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ScannerRouteImport } from './routes/scanner'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthScannerRouteImport } from './routes/_auth.scanner'
 import { Route as AuthDashboardRouteImport } from './routes/_auth.dashboard'
 
-const ScannerRoute = ScannerRouteImport.update({
-  id: '/scanner',
-  path: '/scanner',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
@@ -28,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthScannerRoute = AuthScannerRouteImport.update({
+  id: '/scanner',
+  path: '/scanner',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AuthDashboardRoute = AuthDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -36,44 +36,36 @@ const AuthDashboardRoute = AuthDashboardRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/scanner': typeof ScannerRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/scanner': typeof AuthScannerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/scanner': typeof ScannerRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/scanner': typeof AuthScannerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
-  '/scanner': typeof ScannerRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/scanner': typeof AuthScannerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/scanner' | '/dashboard'
+  fullPaths: '/' | '/dashboard' | '/scanner'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/scanner' | '/dashboard'
-  id: '__root__' | '/' | '/_auth' | '/scanner' | '/_auth/dashboard'
+  to: '/' | '/dashboard' | '/scanner'
+  id: '__root__' | '/' | '/_auth' | '/_auth/dashboard' | '/_auth/scanner'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
-  ScannerRoute: typeof ScannerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/scanner': {
-      id: '/scanner'
-      path: '/scanner'
-      fullPath: '/scanner'
-      preLoaderRoute: typeof ScannerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -88,6 +80,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_auth/scanner': {
+      id: '/_auth/scanner'
+      path: '/scanner'
+      fullPath: '/scanner'
+      preLoaderRoute: typeof AuthScannerRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/dashboard': {
       id: '/_auth/dashboard'
       path: '/dashboard'
@@ -100,10 +99,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthScannerRoute: typeof AuthScannerRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
+  AuthScannerRoute: AuthScannerRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -111,7 +112,6 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
-  ScannerRoute: ScannerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

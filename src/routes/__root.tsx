@@ -6,7 +6,7 @@ import {
   createRootRoute,
   Outlet
 } from '@tanstack/react-router'
-
+import { Toaster } from "@/components/ui/sonner"
 import {
   QueryClient,
   QueryClientProvider,
@@ -33,7 +33,7 @@ export const Route = createRootRoute({
       },
       ...seo({
         title:
-          'QR Login',
+          'NextTalk',
         description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
       }),
     ],
@@ -56,12 +56,12 @@ export const Route = createRootRoute({
         sizes: '16x16',
         href: '/favicon-16x16.png',
       },
-      { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
+      // { rel: 'manifest', href: '/site.webmanifest', color: '#fffff' },
       { rel: 'icon', href: '/favicon.ico' },
     ],
     scripts: [
       {
-        src: '/customScript.js',
+        // src: '/customScript.js',
         type: 'text/javascript',
       },
     ],
@@ -77,6 +77,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <RootDocument>
         <Outlet />
+        <Toaster position="top-center" />
       </RootDocument>
     </QueryClientProvider>
   )
