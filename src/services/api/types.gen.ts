@@ -5,7 +5,6 @@ export type CustomMessage = {
 };
 
 export type Login = {
-    password: string;
     /**
      * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
      */
@@ -113,6 +112,22 @@ export type CoreQrAuthUpdateResponses = {
     200: unknown;
 };
 
+export type CoreStreamRetrieveData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/core/stream/';
+};
+
+export type CoreStreamRetrieveResponses = {
+    /**
+     * Indicates that the operation is successfull.
+     */
+    200: CustomMessage;
+};
+
+export type CoreStreamRetrieveResponse = CoreStreamRetrieveResponses[keyof CoreStreamRetrieveResponses];
+
 export type ClientOptions = {
-    baseURL: 'http://10.21.97.249:8001' | (string & {});
+    baseURL: 'http://10.21.99.223:8001' | (string & {});
 };

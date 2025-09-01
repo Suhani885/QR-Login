@@ -71,7 +71,17 @@ function Home() {
     }
   }, [isMobile])
 
+  useEffect(() => {
+    if (showQR) {
+      const eventSource = new EventSource('https://10.21.97.117:8000/core/events/');
+      eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log({ data })
+      };
+      return () => eventSource.close();
+    }
 
+  }, [showQR]);
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-slate-700">
