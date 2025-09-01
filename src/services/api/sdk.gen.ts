@@ -91,7 +91,7 @@ export const coreQrAuthRetrieve = <ThrowOnError extends boolean = false>(options
 };
 
 /**
- * QR Management API View
+ * API View to login the system after the server sent event has been closed.
  */
 export const coreQrAuthCreate = <ThrowOnError extends boolean = false>(options?: Options<CoreQrAuthCreateData, ThrowOnError>) => {
     return (options?.client ?? _heyApiClient).post<CoreQrAuthCreateResponses, unknown, ThrowOnError>({
@@ -104,11 +104,7 @@ export const coreQrAuthCreate = <ThrowOnError extends boolean = false>(options?:
             }
         ],
         url: '/core/qr-auth/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }
+        ...options
     });
 };
 

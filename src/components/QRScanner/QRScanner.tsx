@@ -13,28 +13,35 @@ const QRScanner = () => {
     const video = videoElementRef.current;
     if (!video) return;
 
+    let scanned = false;
+
     const qrScanner = new QrScanner(
       video,
       (result) => {
-        console.log('decoded qr code`:', result.data);
+        if (scanned) return;
+        scanned = true;
 
-        qrMutation.mutate({
-          body: {
-            scanned_token: result.data,
-          }
-        },
+        console.log('decoded qr code:', result.data);
+
+        qrMutation.mutate(
+          {
+            body: {
+              scanned_token: result.data,
+            },
+          },
           {
             onSuccess: (result) => {
-              console.log(result)
-              toast.success("QR Scanned Successfully")
-              router.navigate({ to: "/dashboard" })
+              console.log(result);
+              toast.success("QR Scanned Successfully");
+              router.navigate({ to: "/dashboard" });
             },
             onError: (error) => {
-              console.log(error)
-              toast.error("ERROR")
-            }
-          })
-
+              console.log(error);
+              toast.error("ERROR");
+              scanned = false;
+            },
+          }
+        );
       },
       {
         returnDetailedScanResult: true,
@@ -46,7 +53,6 @@ const QRScanner = () => {
     console.log('start');
 
     return () => {
-      console.log(qrScanner);
       qrScanner.stop();
       qrScanner.destroy();
     };

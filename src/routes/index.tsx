@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import type { FormProps } from 'antd';
 import { Form, Input, Typography } from 'antd';
-import { MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined, UserOutlined } from '@ant-design/icons';
+import { LoadingOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined, UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRouter } from '@tanstack/react-router';
@@ -11,6 +11,7 @@ import { coreLoginCreateMutation } from '@/services/api/@tanstack/react-query.ge
 import { coreLoginRetrieveOptions } from '@/services/api/@tanstack/react-query.gen';
 import { toast } from 'sonner';
 const { Title, Text } = Typography;
+import { baseURL } from '@/services/baseURL';
 import axios from 'axios';
 
 
@@ -59,7 +60,7 @@ function Home() {
         },
         onError: (error) => {
           console.log(error)
-          toast.error("error")
+          toast.error(error.response?.data.message)
 
         },
       }
@@ -75,7 +76,7 @@ function Home() {
 
   useEffect(() => {
     if (showQR) {
-      const eventSource = new EventSource('https://10.21.97.249:8000/core/qr-auth/', { withCredentials: true });
+      const eventSource = new EventSource(`${baseURL}/core/qr-auth/`, { withCredentials: true });
       eventSource.onmessage = (event) => {
         const data = JSON.parse(event.data)
         console.log("data", data)
@@ -85,7 +86,9 @@ function Home() {
           setQr(data.path)
         }
         if (data.verification_status == true) {
-          axios.post("https://10.21.97.249:8000/core/qr-auth/", {
+          axios.post(`${baseURL}/core/qr-auth/`, {
+            uuid: data.uuid
+          }, {
             withCredentials: true,
           })
             .then((response) => {
@@ -241,9 +244,10 @@ function Home() {
                     <Form.Item>
                       <button
                         type="submit"
+                        disabled={loginmutation.isPending}
                         className="h-12 w-full rounded-xl bg-gradient-to-r from-black via-gray-900 to-slate-700 font-semibold text-lg text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 border-none cursor-pointer"
                       >
-                        Sign In
+                        {loginmutation.isPending ? <LoadingOutlined /> : "Sign in"}
                       </button>
                     </Form.Item>
                   </Form>

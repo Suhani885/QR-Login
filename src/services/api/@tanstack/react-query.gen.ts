@@ -116,7 +116,7 @@ export const coreQrAuthRetrieveOptions = (options?: Options<CoreQrAuthRetrieveDa
 };
 
 /**
- * QR Management API View
+ * API View to login the system after the server sent event has been closed.
  */
 export const coreQrAuthCreateMutation = (options?: Partial<Options<CoreQrAuthCreateData>>): UseMutationOptions<CoreQrAuthCreateResponse, AxiosError<DefaultError>, Options<CoreQrAuthCreateData>> => {
     const mutationOptions: UseMutationOptions<CoreQrAuthCreateResponse, AxiosError<DefaultError>, Options<CoreQrAuthCreateData>> = {

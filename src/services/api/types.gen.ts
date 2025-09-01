@@ -98,12 +98,7 @@ export type CoreQrAuthRetrieveResponses = {
 export type CoreQrAuthRetrieveResponse = CoreQrAuthRetrieveResponses[keyof CoreQrAuthRetrieveResponses];
 
 export type CoreQrAuthCreateData = {
-    body?: {
-        /**
-         * UUID Field
-         */
-        uuid?: string;
-    };
+    body?: never;
     path?: never;
     query?: never;
     url: '/core/qr-auth/';
