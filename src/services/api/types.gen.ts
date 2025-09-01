@@ -4,6 +4,12 @@ export type CustomMessage = {
     readonly msg: string;
 };
 
+export type DeviceIdentification = {
+    uuid: string;
+    readonly path: string;
+    verification_status?: boolean;
+};
+
 export type Login = {
     /**
      * Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
@@ -17,6 +23,11 @@ export type Login = {
     email?: string;
     uuid?: string;
     phone_number: number;
+};
+
+export type DeviceIdentificationWritable = {
+    uuid: string;
+    verification_status?: boolean;
 };
 
 export type CoreLoginDestroyData = {
@@ -79,13 +90,20 @@ export type CoreQrAuthRetrieveData = {
 
 export type CoreQrAuthRetrieveResponses = {
     /**
-     * No response body
+     * Indicates that the operation is successfull.
      */
-    200: unknown;
+    200: DeviceIdentification;
 };
 
+export type CoreQrAuthRetrieveResponse = CoreQrAuthRetrieveResponses[keyof CoreQrAuthRetrieveResponses];
+
 export type CoreQrAuthCreateData = {
-    body?: never;
+    body?: {
+        /**
+         * UUID Field
+         */
+        uuid?: string;
+    };
     path?: never;
     query?: never;
     url: '/core/qr-auth/';
@@ -93,13 +111,20 @@ export type CoreQrAuthCreateData = {
 
 export type CoreQrAuthCreateResponses = {
     /**
-     * No response body
+     * Indicates that the operation is successfull.
      */
-    200: unknown;
+    201: CustomMessage;
 };
 
+export type CoreQrAuthCreateResponse = CoreQrAuthCreateResponses[keyof CoreQrAuthCreateResponses];
+
 export type CoreQrAuthUpdateData = {
-    body?: never;
+    body?: {
+        /**
+         * Token scanned after decoding QR code.
+         */
+        scanned_token: string;
+    };
     path?: never;
     query?: never;
     url: '/core/qr-auth/';
@@ -107,27 +132,13 @@ export type CoreQrAuthUpdateData = {
 
 export type CoreQrAuthUpdateResponses = {
     /**
-     * No response body
-     */
-    200: unknown;
-};
-
-export type CoreStreamRetrieveData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/core/stream/';
-};
-
-export type CoreStreamRetrieveResponses = {
-    /**
      * Indicates that the operation is successfull.
      */
     200: CustomMessage;
 };
 
-export type CoreStreamRetrieveResponse = CoreStreamRetrieveResponses[keyof CoreStreamRetrieveResponses];
+export type CoreQrAuthUpdateResponse = CoreQrAuthUpdateResponses[keyof CoreQrAuthUpdateResponses];
 
 export type ClientOptions = {
-    baseURL: 'http://10.21.99.223:8001' | (string & {});
+    baseURL: 'http://10.21.97.249:8001' | (string & {});
 };

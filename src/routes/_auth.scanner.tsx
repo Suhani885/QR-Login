@@ -1,10 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Scanner } from '@yudiel/react-qr-scanner';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/useIsMobile';
-import { useRouter } from '@tanstack/react-router';
-import { QrReader } from 'react-qr-reader';
 
 import QRScanner from '@/components/QRScanner/QRScanner';
 
@@ -13,17 +8,9 @@ export const Route = createFileRoute('/_auth/scanner')({
 })
 
 function RouteComponent() {
-  const router = useRouter()
+
   const isMobile = useIsMobile();
-  const handleScan = (result: any) => {
-    console.log({ result })
-    toast.success("qr Scanned Successfully")
-    router.navigate({ to: "/dashboard" })
-  }
-  const handleError = () => {
-    console.log("error try again")
-    router.navigate({ to: "/dashboard" })
-  }
+
 
 
 

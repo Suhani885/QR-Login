@@ -11,6 +11,7 @@ import { coreLoginCreateMutation } from '@/services/api/@tanstack/react-query.ge
 import { coreLoginRetrieveOptions } from '@/services/api/@tanstack/react-query.gen';
 import { toast } from 'sonner';
 const { Title, Text } = Typography;
+import axios from 'axios';
 
 
 
@@ -29,6 +30,7 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const loginmutation = useMutation(coreLoginCreateMutation())
+  const [qr, setQr] = useState(null)
   const router = useRouter()
   const { data, isLoading: loading, isSuccess } = useQuery({
     ...coreLoginRetrieveOptions(),
@@ -73,10 +75,30 @@ function Home() {
 
   useEffect(() => {
     if (showQR) {
-      const eventSource = new EventSource('https://10.21.97.117:8000/core/events/');
+      const eventSource = new EventSource('https://10.21.97.249:8000/core/qr-auth/', { withCredentials: true });
       eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log({ data })
+        const data = JSON.parse(event.data)
+        console.log("data", data)
+
+        if (data.path) {
+          console.log(data.path)
+          setQr(data.path)
+        }
+        if (data.verification_status == true) {
+          axios.post("https://10.21.97.249:8000/core/qr-auth/", {
+            withCredentials: true,
+          })
+            .then((response) => {
+              console.log("Data with credentials:", response.data);
+              router.navigate({ to: "/dashboard" })
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+          eventSource.close();
+        }
+
+
       };
       return () => eventSource.close();
     }
@@ -241,7 +263,12 @@ function Home() {
                     <div className="relative">
                       <div className="w-60 h-52 bg-white border-2 border-gray-200 rounded-2xl flex items-center justify-center shadow-lg">
                         <div className="w-52 h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center">
-                          <QrcodeOutlined className="text-6xl text-gray-400" />
+                          {qr ?
+                            <img src={`https://10.21.97.249:8000/media/uploads/${qr}`} alt="" />
+                            :
+                            <QrcodeOutlined className="text-6xl text-gray-400" />
+                          }
+
                         </div>
                       </div>
                     </div>
