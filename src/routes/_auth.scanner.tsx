@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Scanner } from '@yudiel/react-qr-scanner';
-import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRouter } from '@tanstack/react-router';
-import { QrReader } from 'react-qr-reader';
+// import { QrReader } from 'react-qr-reader';
+// import { Scanner } from '@yudiel/react-qr-scanner';
+// import { useEffect, useState } from 'react';
 
 import QRScanner from '@/components/QRScanner/QRScanner';
 
@@ -24,8 +24,6 @@ function RouteComponent() {
     console.log("error try again")
     router.navigate({ to: "/dashboard" })
   }
-
-
 
   if (!isMobile) {
     return (

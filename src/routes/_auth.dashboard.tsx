@@ -49,7 +49,6 @@ function Dashboard() {
             console.log(error)
             toast.error("Error")
           }
-
         }
       )
     }

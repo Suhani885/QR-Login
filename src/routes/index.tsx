@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import type { FormProps } from 'antd';
 import { Form, Input, Typography } from 'antd';
-import { MailOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, EyeInvisibleOutlined, EyeTwoTone, QrcodeOutlined, UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useRouter } from '@tanstack/react-router';
@@ -167,7 +167,7 @@ function Home() {
                     className="space-y-4"
                   >
                     <Form.Item<FieldType>
-                      label="User Name"
+                      label="Username"
                       name="userName"
                       rules={[
                         { required: true, message: 'Please enter your User Name' },
